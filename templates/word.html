@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}{{ word.word }} - WordMirror{% endblock %}
+
+{% block content %}
+<div class="word-page">
+
+    <!-- Word header: word, phonetic, audio, and bookmark button -->
+    <div class="word-header">
+        <div class="word-header-left">
+            <h1 class="word-title">{{ word.word }}</h1>
+
+            <button class="pronounce-btn" onclick="speakWord('{{ word.word }}')" title="Listen to pronunciation">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+            </button>
+        </div>
+
+        <!-- Bookmark button: a form that POSTs to toggle the bookmark -->
+        <form action="{{ url_for('toggle_bookmark', word=word.word) }}" method="POST" class="bookmark-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="bookmark-btn {{ 'bookmarked' if is_bookmarked }}" title="{{ 'Remove bookmark' if is_bookmarked else 'Save to bookmarks' }}">
+                {% if is_bookmarked %}
+                    &#9733;
+                {% else %}
+                    &#9734;
+                {% endif %}
+            </button>
+        </form>
+    </div>
+
+    <!-- AI-generated personalized sentences -->
+    {% if sentences %}
+    <div class="sentences-section">
+        <h3 class="sentences-title">Personalized Examples</h3>
+        {% for sentence in sentences %}
+            <div class="sentence-card">
+                <p>{{ sentence }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Meanings: each part of speech with its definitions -->
+    {% for meaning in word.meanings %}
+    <div class="meaning-section">
+        <span class="part-of-speech">{{ meaning.part_of_speech }}</span>
+
+        <ol class="definition-list">
+            {% for defn in meaning.definitions %}
+            <li>
+                <p class="definition-text">{{ defn.definition }}</p>
+                {% if defn.example %}
+                    <p class="definition-example">"{{ defn.example }}"</p>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+    {% endfor %}
+
+    <!-- Synonyms -->
+    {% if word.synonyms %}
+    <div class="word-tags-section">
+        <h3>Synonyms</h3>
+        <div class="word-tags">
+            {% for syn in word.synonyms %}
+                <a href="{{ url_for('word_detail', word=syn) }}" class="tag tag-link">{{ syn }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Antonyms -->
+    {% if word.antonyms %}
+    <div class="word-tags-section">
+        <h3>Antonyms</h3>
+        <div class="word-tags">
+            {% for ant in word.antonyms %}
+                <a href="{{ url_for('word_detail', word=ant) }}" class="tag tag-link">{{ ant }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Back link -->
+    <div class="word-actions">
+        <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>
+
+<script>
+    function speakWord(word) {
+        var utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.85;
+        speechSynthesis.speak(utterance);
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}My Bookmarks - WordMirror{% endblock %}
+
+{% block content %}
+<div class="bookmarks-page">
+    <h1>My Saved Words</h1>
+
+    {% if bookmarks %}
+        <p class="bookmarks-count">{{ bookmarks | length }} word{{ 's' if bookmarks | length != 1 }} saved</p>
+
+        <div class="bookmarks-list">
+            {% for bm in bookmarks %}
+            <div class="bookmark-item">
+                <a href="{{ url_for('word_detail', word=bm.word) }}" class="bookmark-info">
+                    <span class="bookmark-word">{{ bm.word }}</span>
+                    {% if bm.part_of_speech %}
+                        <span class="bookmark-pos">{{ bm.part_of_speech }}</span>
+                    {% endif %}
+                    {% if bm.definition %}
+                        <p class="bookmark-def">{{ bm.definition }}</p>
+                    {% endif %}
+                </a>
+                <form action="{{ url_for('delete_bookmark', bookmark_id=bm.id) }}" method="POST" class="bookmark-delete-form" style="display:inline;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="bookmark-delete-btn" title="Remove bookmark">&#10005;</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">&#9734;</div>
+            <h2>No saved words yet</h2>
+            <p>Search for a word and click the star to save it here for later review.</p>
+            <a href="{{ url_for('home') }}" class="btn btn-primary">Search for Words</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

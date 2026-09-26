@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - WordMirror{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    <div class="profile-avatar">{{ current_user.name[0] | upper }}</div>
+
+    <h1>{{ current_user.name }}</h1>
+    <p class="profile-email">{{ current_user.email }}</p>
+
+    <div class="profile-card">
+        <div class="profile-field">
+            <span class="field-label">Age</span>
+            <span class="field-value">{{ current_user.age or "Not set" }}</span>
+        </div>
+
+        <div class="profile-field">
+            <span class="field-label">Country</span>
+            <span class="field-value">{{ current_user.country or "Not set" }}</span>
+        </div>
+
+        <div class="profile-field">
+            <span class="field-label">Profession</span>
+            <span class="field-value">{{ current_user.profession or "Not set" }}</span>
+        </div>
+
+        <div class="profile-field">
+            <span class="field-label">Interests &amp; Hobbies</span>
+            <span class="field-value">
+                {% if current_user.interests %}
+                    {% for tag in current_user.interests.split(",") %}
+                        <span class="tag">{{ tag.strip() }}</span>
+                    {% endfor %}
+                {% else %}
+                    Not set
+                {% endif %}
+            </span>
+        </div>
+
+        <div class="profile-field">
+            <span class="field-label">English Level</span>
+            <span class="field-value">{{ current_user.english_level or "Not set" }}</span>
+        </div>
+
+        <div class="profile-field">
+            <span class="field-label">Learning Goal</span>
+            <span class="field-value">{{ current_user.learning_goal or "Not set" }}</span>
+        </div>
+
+        <div class="profile-field">
+            <span class="field-label">Native Language</span>
+            <span class="field-value">{{ current_user.native_language or "Not set" }}</span>
+        </div>
+    </div>
+
+    <a href="{{ url_for('profile_edit') }}" class="btn btn-primary">Edit Profile</a>
+</div>
+{% endblock %}

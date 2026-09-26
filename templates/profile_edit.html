@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile - WordMirror{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <h1>Edit Profile</h1>
+    <p class="auth-subtitle">Update your personal details</p>
+
+    <form method="POST" class="auth-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name"
+                   value="{{ current_user.name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age"
+                   value="{{ current_user.age or '' }}" min="1" max="120">
+        </div>
+
+        <div class="form-group">
+            <label for="country">Country</label>
+            <input type="text" id="country" name="country"
+                   value="{{ current_user.country or '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="profession">Profession</label>
+            <input type="text" id="profession" name="profession"
+                   value="{{ current_user.profession or '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="interests">Interests &amp; Hobbies</label>
+            <input type="text" id="interests" name="interests"
+                   value="{{ current_user.interests or '' }}"
+                   placeholder="e.g. astronomy, history, cooking, reading, hiking">
+            <span class="form-hint">Separate multiple interests and hobbies with commas</span>
+        </div>
+
+        <div class="form-group">
+            <label for="english_level">English Level</label>
+            <select id="english_level" name="english_level">
+                <option value="">-- Select --</option>
+                <option value="Beginner" {% if current_user.english_level == 'Beginner' %}selected{% endif %}>Beginner</option>
+                <option value="Intermediate" {% if current_user.english_level == 'Intermediate' %}selected{% endif %}>Intermediate</option>
+                <option value="Advanced" {% if current_user.english_level == 'Advanced' %}selected{% endif %}>Advanced</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="learning_goal">Learning Goal</label>
+            <select id="learning_goal" name="learning_goal">
+                <option value="">-- Select --</option>
+                <option value="Casual" {% if current_user.learning_goal == 'Casual' %}selected{% endif %}>Casual</option>
+                <option value="Academic" {% if current_user.learning_goal == 'Academic' %}selected{% endif %}>Academic</option>
+                <option value="GRE / TOEFL Prep" {% if current_user.learning_goal == 'GRE / TOEFL Prep' %}selected{% endif %}>GRE / TOEFL Prep</option>
+                <option value="Professional" {% if current_user.learning_goal == 'Professional' %}selected{% endif %}>Professional</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="native_language">Native Language</label>
+            <input type="text" id="native_language" name="native_language"
+                   value="{{ current_user.native_language or '' }}"
+                   placeholder="e.g. Hindi, Spanish, Mandarin">
+        </div>
+
+        <div class="form-button-row">
+            <a href="{{ url_for('profile') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

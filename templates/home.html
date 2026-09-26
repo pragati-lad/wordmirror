@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}WordMirror - Learn Words Your Way{% endblock %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<div class="hero">
+    <span class="hero-greeting">Hello, {{ current_user.name }}!</span>
+</div>
+{% else %}
+<div class="hero">
+    <h1>WordMirror</h1>
+    <p class="tagline">Learn words your way</p>
+    <p class="hero-description">
+        Build your vocabulary with personalized example sentences
+        that connect new words to your interests and life.
+    </p>
+    <div class="hero-actions">
+        <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
+        <a href="{{ url_for('login') }}" class="btn btn-secondary">Log In</a>
+    </div>
+</div>
+{% endif %}
+
+{% if current_user.is_authenticated %}
+<!-- Words of the Day -->
+{% if daily_words %}
+<section class="wotd-section">
+    <span class="wotd-label">words of the day</span>
+    {% for dw in daily_words %}
+    <a href="{{ url_for('word_detail', word=dw.word) }}" class="wotd-banner">
+        <h2 class="wotd-word">{{ dw.word }}</h2>
+        {% if dw.part_of_speech %}
+            <span class="wotd-pos">{{ dw.part_of_speech }}</span>
+        {% endif %}
+        <p class="wotd-definition">{{ dw.definition }}</p>
+        {% if dw.sentence %}
+            <p class="wotd-sentence">"{{ dw.sentence }}"</p>
+        {% endif %}
+        <span class="wotd-cta">tap to explore &rarr;</span>
+    </a>
+    {% endfor %}
+</section>
+{% endif %}
+
+{% else %}
+<!-- Features section for non-logged-in users -->
+<section class="features">
+    <h2>How It Works</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h3>Discover Words</h3>
+            <p>Get 3 new vocabulary words every day from a curated list of essential words.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Personal Sentences</h3>
+            <p>See example sentences tailored to your interests and profession, so every word feels relevant.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Save &amp; Review</h3>
+            <p>Bookmark words you want to remember and review them anytime.</p>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
