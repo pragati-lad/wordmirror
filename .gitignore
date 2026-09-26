@@ -6,3 +6,8 @@ __pycache__/
 wordmirror.db
 wordmirror2.db
 mobile/
+.claude/
+.expo/
+tmpclaude-*
+nul
+node_modules/
