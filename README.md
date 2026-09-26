@@ -2,6 +2,8 @@
 
 A vocabulary learning app that helps you discover, save, and practice English words daily.
 
+**Live:** https://wordmirror.onrender.com
+
 ## Features
 
 - **Word Search** — Look up any word with definitions, phonetics, and audio pronunciation
@@ -23,8 +25,6 @@ Create a `.env` file:
 SECRET_KEY=any-secret-string
 GROQ_API_KEY=your-key-here  # optional, for AI sentences
 ```
-
-Open http://localhost:5000
 
 ## Deploy to Render
 
