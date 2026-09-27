@@ -32,6 +32,10 @@ GROQ_API_KEY=your-key-here  # optional, for AI sentences
 2. On Render, create a **Blueprint** and connect the repo
 3. `render.yaml` handles the rest — web service + free PostgreSQL
 
+## Uptime
+
+The free Render instance sleeps after inactivity. [UptimeRobot](https://uptimerobot.com) pings the site every 5 minutes to keep it awake.
+
 ## Tech Stack
 
 Flask · SQLite (local) · PostgreSQL (production) · Gunicorn · Wiktionary API · Groq AI
